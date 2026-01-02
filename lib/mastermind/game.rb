@@ -3,12 +3,9 @@ class Game
     @secret_code = SecretCode.new.code
   end
 
-  def evaluate_guess(guess)
+  def evaluate_guess(guess_array)
     hints = Hints.new
     exact_matches = []
-    guess_array = guess.split("").map(&:to_i)
-    raise ArgumentError, "Guess must be exactly 4 digits long" unless guess_array.length == 4
-    raise ArgumentError, "All parts of guess must be numbers between 1 and 6" unless guess.match?(/^[1-6]{4}$/)
 
     guess_array.each_with_index do |digit, index|
       if @secret_code[index] == digit
@@ -34,10 +31,20 @@ class Game
     while round <= 12
       puts "Input your four digit guess:"
       guess = gets.chomp
-      hints = evaluate_guess(guess)
+      guess_array = guess.split("").map(&:to_i)
+      unless guess_array.length == 4 && guess.match?(/^[1-6]{4}$/)
+        puts "Guess must be exactly 4 digits long, with each number being in the range between 1 and 6!"
+        next
+      end     
+      hints = evaluate_guess(guess_array)
       puts hints
+      if hints.secret_code_equaled?
+        puts "You have won!"
+        return
+      end
       round += 1
     end
+    puts "You don't have any more turns left to make a guess, game ends."
   end
 end
 #       guess = gets.chomp.slice("")

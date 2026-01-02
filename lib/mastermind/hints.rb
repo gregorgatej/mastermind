@@ -8,6 +8,10 @@ class Hints
     @hints.join(" ")
   end
 
+  def secret_code_equaled?
+    @hints == ["x", "x", "x", "x"]
+  end
+
   def add_exact_match
     @hints << "x"
   end
