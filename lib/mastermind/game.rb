@@ -7,6 +7,8 @@ class Game
     hints = Hints.new
     exact_matches = []
     guess_array = guess.split("").map(&:to_i)
+    raise ArgumentError, "Guess must be exactly 4 digits long" unless guess_array.length == 4
+    raise ArgumentError, "All parts of guess must be numbers between 1 and 6" unless guess.match?(/^[1-6]{4}$/)
 
     guess_array.each_with_index do |digit, index|
       if @secret_code[index] == digit
@@ -32,7 +34,6 @@ class Game
     while round <= 12
       puts "Input your four digit guess:"
       guess = gets.chomp
-      puts guess
       hints = evaluate_guess(guess)
       puts hints
       round += 1
