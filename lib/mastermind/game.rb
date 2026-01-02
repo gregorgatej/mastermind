@@ -25,7 +25,6 @@ class Game
   end
 
   def start
-    # game_won = false
     round = 1
     puts "Psst! The secret code is #{@secret_code.join(" ")}"
     while round <= 12
@@ -47,16 +46,3 @@ class Game
     puts "You don't have any more turns left to make a guess, game ends."
   end
 end
-#       guess = gets.chomp.slice("")
-#       if (guess.equals(secret_code))
-#           game_won = true
-#         break
-#       else hints = evaluate_guess(guess)
-#       end
-#     end
-#     if game_won
-#       puts "Congrats"
-#     else
-#       puts "Try again next time" 
-#   end
-# end
