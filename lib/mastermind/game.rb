@@ -1,26 +1,40 @@
 class Game
   def initialize
-    @secret_code = secret_code
-  end
-
-  def secret_code
-    [1, 2, 3, 4, 5, 6].sample(4)
+    @secret_code = SecretCode.new.code
   end
 
   def evaluate_guess(guess)
-    hints = []
-    # TODO for every entry where both guess.value && guess.index are equal to secret_code add an "x" to hints
-    #      for every entry where only guess.value that is equal add an "o" to hints
+    hints = Hints.new
+    exact_matches = []
+    guess_array = guess.split("").map(&:to_i)
+
+    guess_array.each_with_index do |digit, index|
+      if @secret_code[index] == digit
+        hints.add_exact_match
+        exact_matches << index
+      end
+    end
+
+    guess_array.each_with_index do |digit, index|
+      next if exact_matches.include?(index)
+      if @secret_code.include?(digit)
+        hints.add_correct_value_in_wrong_position
+      end
+    end
+
     hints
   end
 
   def start
     # game_won = false
     round = 1
+    puts "Psst! The secret code is #{@secret_code.join(" ")}"
     while round <= 12
       puts "Input your four digit guess:"
       guess = gets.chomp
       puts guess
+      hints = evaluate_guess(guess)
+      puts hints
       round += 1
     end
   end
