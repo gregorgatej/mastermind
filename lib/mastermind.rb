@@ -1,3 +1,7 @@
 require_relative "mastermind/game"
 require_relative "mastermind/secret_code"
 require_relative "mastermind/hints"
+require_relative "mastermind/code_creator"
+require_relative "mastermind/code_guesser"
+require_relative "mastermind/computer_player"
+require_relative "mastermind/human_player"
