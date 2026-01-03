@@ -6,15 +6,15 @@ class Hints
   end
 
   def to_s
-    @array.join(" ")
+    SecretCode.colorize_entries(@array).join(" ")
   end
 
   def secret_code_equaled?
-    @array == ["Red", "Red", "Red", "Red"]
+    @array == ["Black", "Black", "Black", "Black"]
   end
 
   def add_exact_match
-    @array << "Red"
+    @array << "Black"
   end
 
   def add_correct_value_in_wrong_position

@@ -6,10 +6,16 @@ class ComputerPlayer
   end
 
   def provide_code
-    [1, 2, 3, 4, 5, 6].sample(4)
+    random_colors
   end
 
   def provide_guess
-    [1, 2, 3, 4, 5, 6].sample(4)
+    random_colors
+  end
+
+  private
+
+  def random_colors
+    SecretCode.color_choices.sample(4)
   end
 end

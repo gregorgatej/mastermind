@@ -7,6 +7,9 @@ class Game
   def start
     puts "Welcome to the game of Mastermind!"
     mode = choose_mode
+    color_choices = SecretCode.color_choices
+    puts "There are #{color_choices.length} possible choices to choose from in this game:"
+    puts "#{SecretCode.colorize_entries(color_choices).join(" ")}"
     case mode
     when 1
       play_human_creates_code_computer_guesses
@@ -38,12 +41,13 @@ class Game
 
   def play_rounds(code_creator, code_guesser, secret_code)
     puts "#{code_creator.player.name} has determined the secret code."
-    puts "Psst! The secret code is #{secret_code.code.join(" ")}"
+    # Uncomment this to better understand the feedback from the game
+    # puts "Psst! The secret code is #{SecretCode.colorize_entries(secret_code.code).join(" ")}"
     puts "#{code_guesser.player.name} will try to guess the code."
     while @round <= @max_rounds
       puts "Let's play round #{@round}/#{@max_rounds}"
       guess = code_guesser.make_guess
-      puts "The guess is #{guess.join(" ")}"
+      puts "The guess is #{SecretCode.colorize_entries(guess).join(" ")}"
       hints = evaluate_guess(guess, secret_code.code)
       if hints.secret_code_equaled?
         puts "Congratulations #{code_guesser.player.name}, you have won!"
@@ -65,16 +69,16 @@ class Game
     hints = Hints.new
     exact_matches = []
 
-    guess_array.each_with_index do |digit, index|
-      if secret_code_array[index] == digit
+    guess_array.each_with_index do |color, index|
+      if secret_code_array[index] == color
         hints.add_exact_match
         exact_matches << index
       end
     end
 
-    guess_array.each_with_index do |digit, index|
+    guess_array.each_with_index do |color, index|
       next if exact_matches.include?(index)
-      if secret_code_array.include?(digit)
+      if secret_code_array.include?(color)
         hints.add_correct_value_in_wrong_position
       end
     end
