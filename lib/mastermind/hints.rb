@@ -8,14 +8,14 @@ class Hints
   end
 
   def secret_code_equaled?
-    @hints == ["x", "x", "x", "x"]
+    @hints == ["Red", "Red", "Red", "Red"]
   end
 
   def add_exact_match
-    @hints << "x"
+    @hints << "Red"
   end
 
   def add_correct_value_in_wrong_position
-    @hints << "o"
+    @hints << "White"
   end
 end
