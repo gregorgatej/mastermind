@@ -1,21 +1,23 @@
 class Hints
+  attr_reader :array
+
   def initialize
-    @hints = []
+    @array = []
   end
 
   def to_s
-    @hints.join(" ")
+    @array.join(" ")
   end
 
   def secret_code_equaled?
-    @hints == ["Red", "Red", "Red", "Red"]
+    @array == ["Red", "Red", "Red", "Red"]
   end
 
   def add_exact_match
-    @hints << "Red"
+    @array << "Red"
   end
 
   def add_correct_value_in_wrong_position
-    @hints << "White"
+    @array << "White"
   end
 end

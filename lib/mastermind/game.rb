@@ -49,8 +49,12 @@ class Game
         puts "Congratulations #{code_guesser.player.name}, you have won!"
         return
       end
-      puts "The hints for this guess are:"
-      puts hints
+      unless hints.array.empty?
+        puts "The hints for this guess are:"
+        puts hints
+      else
+        puts "No hints for this guess."
+      end
       @round += 1
     end
     puts "Unfortunately for you #{code_guesser.player.name}, you don't have any more turns " \
