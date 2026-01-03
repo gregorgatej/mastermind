@@ -1,5 +1,4 @@
 class Hints
-  
   def initialize
     @hints = []
   end

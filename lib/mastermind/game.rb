@@ -1,14 +1,68 @@
 class Game
   def initialize
-    @secret_code = SecretCode.new.code
+    @round = 1
+    @max_rounds = 12
   end
 
-  def evaluate_guess(guess_array)
+  def start
+    puts "Welcome to the game of Mastermind!"
+    mode = choose_mode
+    case mode
+    when 1
+      play_human_creates_code_computer_guesses
+    when 2
+      play_computer_creates_code_human_guesses
+    end
+  end
+
+  def choose_mode
+    puts "Choose if you want to be the secret code creator (1) or guesser (2):"
+    gets.chomp.to_i
+  end
+
+  def play_human_creates_code_computer_guesses
+    code_creator = CodeCreator.new(HumanPlayer.new("Human"))
+    code_guesser = CodeGuesser.new(ComputerPlayer.new("Computer"))
+    secret_code = SecretCode.new(code_creator.create_code)
+
+    play_rounds(code_creator, code_guesser, secret_code)
+  end
+
+  def play_computer_creates_code_human_guesses
+    code_creator = CodeCreator.new(ComputerPlayer.new("Computer"))
+    code_guesser = CodeGuesser.new(HumanPlayer.new("Human"))
+    secret_code = SecretCode.new(code_creator.create_code)
+
+    play_rounds(code_creator, code_guesser, secret_code)
+  end
+
+  def play_rounds(code_creator, code_guesser, secret_code)
+    puts "#{code_creator.player.name} has determined the secret code."
+    puts "Psst! The secret code is #{secret_code.code.join(" ")}"
+    puts "#{code_guesser.player.name} will try to guess the code."
+    while @round <= @max_rounds
+      puts "Let's play round #{@round}/#{@max_rounds}"
+      guess = code_guesser.make_guess
+      puts "The guess is #{guess.join(" ")}"
+      hints = evaluate_guess(guess, secret_code.code)
+      if hints.secret_code_equaled?
+        puts "Congratulations #{code_guesser.player.name}, you have won!"
+        return
+      end
+      puts "The hints for this guess are:"
+      puts hints
+      @round += 1
+    end
+    puts "Unfortunately for you #{code_guesser.player.name}, you don't have any more turns " \
+         "left to make a guess, so you lose."
+  end
+
+  def evaluate_guess(guess_array, secret_code_array)
     hints = Hints.new
     exact_matches = []
 
     guess_array.each_with_index do |digit, index|
-      if @secret_code[index] == digit
+      if secret_code_array[index] == digit
         hints.add_exact_match
         exact_matches << index
       end
@@ -16,33 +70,11 @@ class Game
 
     guess_array.each_with_index do |digit, index|
       next if exact_matches.include?(index)
-      if @secret_code.include?(digit)
+      if secret_code_array.include?(digit)
         hints.add_correct_value_in_wrong_position
       end
     end
 
     hints
-  end
-
-  def start
-    round = 1
-    puts "Psst! The secret code is #{@secret_code.join(" ")}"
-    while round <= 12
-      puts "Input your four digit guess:"
-      guess = gets.chomp
-      guess_array = guess.split("").map(&:to_i)
-      unless guess_array.length == 4 && guess.match?(/^[1-6]{4}$/)
-        puts "Guess must be exactly 4 digits long, with each number being in the range between 1 and 6!"
-        next
-      end     
-      hints = evaluate_guess(guess_array)
-      puts hints
-      if hints.secret_code_equaled?
-        puts "You have won!"
-        return
-      end
-      round += 1
-    end
-    puts "You don't have any more turns left to make a guess, game ends."
   end
 end

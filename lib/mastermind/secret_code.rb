@@ -1,5 +1,4 @@
 class SecretCode
-
   attr_reader :code
 
   def initialize(code)
