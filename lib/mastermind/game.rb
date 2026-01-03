@@ -1,5 +1,6 @@
 class Game
   def initialize
+    @rounds = []
     @round = 1
     @max_rounds = 12
   end
@@ -59,7 +60,9 @@ class Game
       else
         puts "No hints for this guess."
       end
+      @rounds << Round.new(@round, guess, hints)
       @round += 1
+      puts "Length of @rounds is #{@rounds.length}"
     end
     puts "Unfortunately for you #{code_guesser.player.name}, you don't have any more turns " \
          "left to make a guess, so you lose."
