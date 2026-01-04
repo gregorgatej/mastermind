@@ -17,7 +17,7 @@ class CodeCreator
     color_choices = SecretCode.color_choices
     entries_array = input_string.split(/\s+/)
     unless entries_array.length == 4 && entries_array.all? { |entry| color_choices.include?(entry) }
-      raise ArgumentError "Your input must be 4 entries long, with each entry space separated and being one " \
+      raise ArgumentError, "Your input must be 4 entries long, with each entry space separated and being one " \
                           "of the colors #{SecretCode.color_choices.join(", ")}, spelled exactly!" \
     end
     entries_array

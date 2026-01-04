@@ -47,6 +47,9 @@ class Game
     puts "#{code_guesser.player.name} will try to guess the code."
     while @round <= @max_rounds
       puts "Let's play round #{@round}/#{@max_rounds}"
+      if code_guesser.player.is_a?(ComputerPlayer)
+        code_guesser.player.previous_rounds = @rounds
+      end
       guess = code_guesser.make_guess
       puts "The guess is #{SecretCode.colorize_entries(guess).join(" ")}"
       hints = evaluate_guess(guess, secret_code.code)
